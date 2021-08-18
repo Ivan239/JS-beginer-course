@@ -2,9 +2,11 @@ import React from 'react'
 import './Block.scss'
 
 function Block (props) {
-  const { className, children, color } = props
+  const { className, children, color, onClick } = props
 
-  return (<div className={`block ${className}`} style={{ backgroundColor: color }}>
+  console.log('Render block', children)
+
+  return (<div className={`block ${className}`} style={{ backgroundColor: color }} onClick={onClick}>
     {children}
   </div>)
 }

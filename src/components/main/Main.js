@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import Block from '../block/Block'
 import './Main.scss'
 
@@ -13,11 +13,21 @@ const generateBlocks = (count) => Array.from({ length: count })
   })
 
 function Main () {
-  const blocks = generateBlocks(7)
+  const blocks = useMemo(() => generateBlocks(7), [])
+  const [selectedBlockIndex, setSelectedBlockIndex] = useState()
 
   return (
     <main className="main container">
-      {blocks.map((block, index) => <Block key={index} className="main-block" color={block.color}>{index}</Block>)}
+      {blocks.map((block, index) => (
+        <Block
+          key={index}
+          className={`main-block ${selectedBlockIndex === index && 'main-block-selected'}`}
+          color={block.color}
+          onClick={() => setSelectedBlockIndex(index)}
+        >
+          {index}
+        </Block>
+      ))}
     </main>
   )
 }
