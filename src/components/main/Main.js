@@ -1,14 +1,12 @@
 import React, { useMemo, useState } from 'react'
-import Block from '../block/Block'
+import Block, { blockColors } from '../block/Block'
 import './Main.scss'
-
-const colors = ['red', 'purple', 'green', 'yellow']
 
 const generateBlocks = (count) => Array.from({ length: count })
   .map(item => {
-    const randomColorIndex = Math.floor(Math.random() * colors.length)
+    const randomColorIndex = Math.floor(Math.random() * blockColors.length)
     return {
-      color: colors[randomColorIndex]
+      color: blockColors[randomColorIndex]
     }
   })
 
