@@ -1,0 +1,22 @@
+.main {
+  padding-top: 40px;
+  padding-bottom: 60px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-left: -20px;
+  margin-top: -20px;
+
+  > * {
+    margin: 20px 0 0 20px;
+  }
+
+  .phantomBlock {
+    flex-grow: 1
+  }
+}
+
+//.main-block {
+//  margin: 20px 0 0 20px;
+//}

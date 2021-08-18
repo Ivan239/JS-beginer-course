@@ -1,0 +1,13 @@
+$blockSize: 150px;
+
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $blockSize;
+  height: $blockSize;
+  background-color: black;
+
+  font-weight: bold;
+  font-size: 32px;
+}
