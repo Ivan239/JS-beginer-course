@@ -10,17 +10,17 @@ function Form({ onSubmit }) {
   const methods = useForm()
   const navigation = useNavigate()
 
+  const handleSubmit = (values) => {
+    if (onSubmit) {
+      onSubmit(values)
+      navigation('/game')
+    }
+  }
+
   return (
     <FormWrapper>
       <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit((values) => {
-            if (onSubmit) {
-              onSubmit(values)
-              navigation('/game')
-            }
-          })}
-        >
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Input
             type="text"
             name="name"
