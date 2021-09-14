@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Header from './components/Header/Header'
 import { GlobalStyle } from './index.styles'
-import Form from './components/Form/Form'
-import Game from './components/Game/Game'
+import Form from './pages/home/Form'
+import Game from './pages/game/Game'
 
 function App() {
   const [state, setState] = useState({})
