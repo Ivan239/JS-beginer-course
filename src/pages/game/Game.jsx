@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { GameTitle, GameWrapper } from './Game.styles'
 import Loader from '../../components/ui/loader/Loader'
 import Deck from './Deck'
 import Cards from './Cards'
 import parseCardPoint from '../../utils/cards/parseCardsPoints'
+import cardsService from '../../services/cards.service'
 
 function Game({ name, age }) {
   const navigate = useNavigate()
@@ -21,10 +21,10 @@ function Game({ name, age }) {
       navigate('/', { replace: true })
       return
     }
-    axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1').then((response) => {
-      if (response.data.success === true) {
-        setDeckId(response.data.deck_id)
-        setRemaining(response.data.remaining)
+    cardsService.generateDeck().then((data) => {
+      if (data.success === true) {
+        setDeckId(data.deck_id)
+        setRemaining(data.remaining)
         setLoading(false)
       }
     })
@@ -34,10 +34,10 @@ function Game({ name, age }) {
   const handleDrawCard = () => {
     if (remaining > 0) {
       setLoading(true)
-      axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`).then((response) => {
-        setRemaining(response.data.remaining)
-        setCards((prevCards) => [...prevCards, ...response.data.cards])
-        setPoints((prevPoints) => prevPoints + parseCardPoint(response.data.cards[0].value))
+      cardsService.drawCardsFromDeck(deckId, 1).then((data) => {
+        setRemaining(data.remaining)
+        setCards((prevCards) => [...prevCards, ...data.cards])
+        setPoints((prevPoints) => prevPoints + parseCardPoint(data.cards[0].value))
         setLoading(false)
       })
     }
