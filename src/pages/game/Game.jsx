@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { GameTitle, GameWrapper } from './Game.styles'
 import Loader from '../../components/ui/loader/Loader'
 import Deck from './components/Deck'
@@ -7,7 +8,9 @@ import Cards from './components/Cards'
 import parseCardPoint from '../../utils/cards/parseCardsPoints'
 import cardsService from '../../services/cards.service'
 
-function Game({ name, age }) {
+function Game() {
+  const { name, age } = useSelector((state) => state.user)
+
   const navigate = useNavigate()
 
   const [deckId, setDeckId] = useState()
