@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const faker = require('faker')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
+const cors = require('cors')
 
 const PORT = 3003
 const SECRET = 'secret key'
@@ -11,6 +12,7 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
+// app.use(cors())
 
 const data = Array.from({ length: 5 + Math.random() * 20}).map(_ => ({
   id: faker.datatype.uuid(),
