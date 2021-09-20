@@ -12,7 +12,7 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
-// app.use(cors())
+app.use(cors())
 
 const data = Array.from({ length: 5 + Math.random() * 20}).map(_ => ({
   id: faker.datatype.uuid(),
@@ -25,11 +25,12 @@ const data = Array.from({ length: 5 + Math.random() * 20}).map(_ => ({
 
 const users = {}
 const usersSession = {}
+const LOGIN_SEPAROTOR = ';'
 
 const authMiddleware = async (req, res, next) => {
   if (req.headers.authorization) {
     const authToken = Buffer.from(req.headers.authorization, 'base64').toString()
-    const [login, hash] = authToken.split('.')
+    const [login, hash] = authToken.split(LOGIN_SEPAROTOR)
     if (login && hash && login in users) {
       const result = await new Promise((resolve) => bcrypt.compare(login, hash, function (err, result) {
         resolve(result)
@@ -63,7 +64,7 @@ app.post('/login', (req, res) => {
   if (req.body.login in users && req.body.password === users[req.body.login]) {
     bcrypt.hash(req.body.login, SALT_ROUNDS, function(err, hash) {
       res.status(200).json({
-        token: Buffer.from(`${req.body.login}.${hash}`).toString('base64')
+        token: Buffer.from(`${req.body.login}${LOGIN_SEPAROTOR}${hash}`).toString('base64')
       })
     });
     return
@@ -77,7 +78,7 @@ app.post('/register', (req, res) => {
       message: 'Login already exists'
     })
   }
-  else if (!req.body.login && !req.body.password) {
+  else if (!req.body.login || !req.body.password) {
     res.status(400).json({
       message: 'Login and password required'
     })
