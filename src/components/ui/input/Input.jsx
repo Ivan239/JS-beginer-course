@@ -1,8 +1,11 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { InputError, InputWrapper, StyledInput } from './Input.styles'
+import { useDataIdProp } from '../../../hooks/testing'
 
 function Input({ name, validation, label, ...rest }) {
+  const errorDataId = useDataIdProp('input-error')
+
   const {
     register,
     formState: { errors }
@@ -18,7 +21,7 @@ function Input({ name, validation, label, ...rest }) {
             validate: validation
           })}
         />
-        {errors[name]?.message && <InputError>{errors[name].message}</InputError>}
+        {errors[name]?.message && <InputError {...errorDataId}>{errors[name].message}</InputError>}
       </label>
     </InputWrapper>
   )
