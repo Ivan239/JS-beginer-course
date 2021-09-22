@@ -1,7 +1,8 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
+    'jest/globals': true
   },
   extends: ['plugin:react/recommended', 'airbnb', 'plugin:prettier/recommended'],
   parser: '@babel/eslint-parser',
@@ -12,7 +13,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', 'prettier'],
+  plugins: ['react', 'prettier', 'jest'],
   rules: {
     'import/prefer-default-export': 0,
     'react/jsx-props-no-spreading': 0,
