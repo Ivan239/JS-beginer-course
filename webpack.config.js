@@ -3,7 +3,7 @@ const ESLintPlugin = require('eslint-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: '/src/index.jsx',
+  entry: '/src/index.tsx',
   output: {
     path: path.resolve('dist'),
     filename: 'bundle.js',
@@ -21,9 +21,9 @@ module.exports = {
       }
     }
   },
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
       'react-dom': '@hot-loader/react-dom'
     }
@@ -31,11 +31,10 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js(x)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {}
+          loader: 'ts-loader'
         }
       },
       {

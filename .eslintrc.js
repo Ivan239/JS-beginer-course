@@ -4,8 +4,8 @@ module.exports = {
     es2021: true,
     'jest/globals': true
   },
-  extends: ['plugin:react/recommended', 'airbnb', 'plugin:prettier/recommended'],
-  parser: '@babel/eslint-parser',
+  extends: ['plugin:react/recommended', 'airbnb', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -13,7 +13,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', 'prettier', 'jest'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
   rules: {
     'import/prefer-default-export': 0,
     'react/jsx-props-no-spreading': 0,
