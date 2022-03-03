@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <title>Hello World!</title>
+  <style>
+    .chat {
+        height: 300px;
+        width: 500px;
+        border: 1px solid gray;
+        border-radius: 12px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    .wrapper-text {
+        display: flex;
+        flex-direction: column;
+        font-size: 10px;
+        color: rgba(0,0,0,.6);
+        padding: 8px;
+        width: 110px;
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+
+    .text {
+        display: flex;
+        font-size: 12px;
+    }
+
+    textarea {
+        width: 500px;
+    }
+    .submit-btn {
+        display: block;
+    }
+    .message-text {
+        padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Realtime chat using Websockets</h1>
+  <label>
+    Enter you nickname
+    <input name="name" type="text" oninput="handleNicknameInput()">
+  </label>
+  <div class="chat">
+
+  </div>
+  <textarea name="message" cols="30" rows="4"></textarea>
+  <button class="submit-btn" onclick="handleSubmit()">Send</button>
+</body>
+<script src="https://cdn.socket.io/4.2.0/socket.io.min.js" integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj" crossorigin="anonymous"></script>
+<script>
+  const socket = io("http://10.91.49.148:3003");
+
+  let nickname = ''
+  checkSubmitDisabled()
+  function handleNicknameInput(event) {
+    const input = document.getElementsByName('name')[0]
+    nickname = input.value
+    checkSubmitDisabled()
+  }
+  function checkSubmitDisabled() {
+    const submitBtn = document.querySelector('.submit-btn')
+    if (nickname && socket && socket.connected) {
+      submitBtn.removeAttribute('disabled')
+    } else {
+      submitBtn.setAttribute('disabled', 'true')
+    }
+  }
+
+  window.socket = socket
+
+  socket.on('connect', () => {
+    checkSubmitDisabled()
+  })
+  socket.on('disconnect', () => {
+    checkSubmitDisabled()
+  })
+
+  socket.on('message', (message) => {
+    console.log(message)
+    const chat = document.querySelector('.chat')
+    const text = document.createElement('div')
+    const nameText = document.createElement('div')
+    nameText.innerText = message.name
+    const timeText = document.createElement('div')
+    timeText.innerText = new Date(message.date).toLocaleString()
+    const messageText = document.createElement('div')
+    messageText.innerText = message.text
+    messageText.classList.add('message-text')
+    const wrapperText = document.createElement('div')
+    wrapperText.appendChild(nameText)
+    wrapperText.appendChild(timeText)
+    wrapperText.classList.add('wrapper-text')
+    text.appendChild(wrapperText)
+    text.appendChild(messageText)
+    text.classList.add('text')
+    const isBottom = Math.abs(chat.scrollTop - (chat.scrollHeight - chat.clientHeight)) < 5
+    chat.appendChild(text)
+    if (isBottom) {
+      chat.scrollTo({ top: chat.scrollHeight })
+    }
+  })
+
+
+  function handleSubmit() {
+    const textarea = document.getElementsByName('message')[0]
+    const message = textarea.value
+    textarea.value = ''
+
+    if (message) {
+      socket.emit('message', { text: message, name: nickname })
+    }
+  }
+</script>
+</html>
