@@ -1,22 +1,34 @@
-import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import React from 'react';
+import Header from './layout/Header/Header'
+import Main from './layout/Main/Main'
+import Footer from './layout/Footer/Footer'
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+import NotFound from './pages/NotFound/NotFound';
+import styles from './App.module.sass'
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Switch>
-        {/*  TODO
-           Add routes:
-            -for Home page ('/', ./pages/Home.jsx)
-            -for Register ('/register', ./pages/Home.jsx)
-            -for Login (/login, ./pages/Login.jsx) */}
-        <Route>404</Route>
-      </Switch>
-    </BrowserRouter>
-  )
+    return (
+        <div className={styles.app}>
+            <BrowserRouter>
+                <Header />
+                <div className={styles.content}>
+                    <Routes>
+                        <Route path="/" element={<Main />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </div>
+                <Footer />
+            </BrowserRouter>
+        </div>
+    );
 }
 
-export default App
+export default App;
